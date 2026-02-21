@@ -48,12 +48,12 @@ export default {
     </div>
 
     <div v-else class="content">
-      <img
-        v-if="apod.media_type === 'image'"
-        :src="apod.hdurl || apod.url"
-        :alt="apod.title"
-        class="apod-image"
-      />
+      <div
+      v-if="apod.media_type === 'image'"
+      class="apod-bg"
+      :style="{ backgroundImage: `url(${apod.hdurl || apod.url})`        
+      }"
+      ></div>
 
       <iframe
         v-else
@@ -83,56 +83,69 @@ export default {
 
 <style>
 .nasa-page {
-  height: 100vh;
-  width: 100vw;
-  background: rgb(0, 0, 0);
+  height: 100%;
+  width: 100%;
+  background: black;
   color: white;
   overflow: hidden;
   position: relative;
 }
 
-.apod-image,
+.apod-bg,
 .apod-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  position: absolute;
+  inset: 0;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
+.content {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
 .overlay {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+  bottom: 20%;
+  left: 50%;
+  transform: translateX(-50%);
 
-  padding: 24px;
-  background: rgba(254, 254, 254, 0.11);
+  width: 75%;   /* SAFE WIDTH */
+  max-width: 75%;
 
-  transition: height 0.35s ease, padding 0.35s ease;
-  overflow: hidden;
+  padding: 10px;
+  background: rgba(254, 254, 254, 0.12);
+  backdrop-filter: blur(8px);
+
+  border-radius: 40px;
 
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
 
-  height: 110px; /* collapsed height */
+  height: 80px;
+  overflow: hidden;
+
+  transition: height 0.3s ease;
 }
 
 .overlay.expanded {
-  height: 50vh; /* expanded height */
+  height: 40%;
   overflow-y: auto;
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(8px);
 }
 
+
+
 .overlay h2 {
-  font-size: 22px;
+  font-size: 18px;
   margin-bottom: 10px;
 }
 
-.overlay p {
-  font-size: 15px;
-  line-height: 1.6;
-  opacity: 0.9;
-  margin-bottom: 16px;
+ .overlay p {
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .toggle-btn {
@@ -143,11 +156,11 @@ export default {
   border-radius: 20px;
   color: white;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 15px;
   transition: background 0.2s ease;
 }
 
 .toggle-btn:hover {
-  background: rgb(255, 255, 255);
+  background: rgb(226, 223, 223);
 }
 </style>
